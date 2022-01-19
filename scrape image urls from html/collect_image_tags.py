@@ -6,6 +6,7 @@ from urllib.parse import urljoin, urlparse
 import re
 import datetime
 import time
+import random
 
 
 # failed
@@ -30,15 +31,15 @@ for p in example:
 targets = soup.find_all("img")
 
 #print(targets)
-time = datetime.datetime.now()
+current_time = datetime.datetime.now()
 count = 0
 
 for link in targets:
     #get all
 
     if count > 1:
-
-        time.sleep(10)
+        sleep_time = random.randint(10,26)
+        time.sleep(sleep_time)
 
     if str(link['src']).startswith("https://static1.e621.net"):
         string_link = str(link['src'])
@@ -54,13 +55,15 @@ for link in targets:
         jpg_link = edited_string_link.replace(".jpg", ".png")
 
         if image_request.status_code == 200:
-            os.system("wget --no-check-certificate {}".format(edited_string_link))
+            os.system("wget --no-check-certificate -nc {}".format(edited_string_link))
         else:
             jpg_request = requests.get(jpg_request)
             
             if image_request.status_code == 200:
-                os.system("wget --no-check-certificate {}".format(edited_string_link))
+                os.system("wget --no-check-certificate -nc {}".format(edited_string_link))
             
+            else:
+                print("error pull failed")
 
         actual_image_string_link = edited_string_link.replace(".jpg", ".png")
         
@@ -71,4 +74,7 @@ for link in targets:
 
     #print(link['src'])
     # lol ez
-    
+
+print("*************************")
+print("\tprocess completed")
+print("*************************")
