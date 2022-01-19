@@ -8,9 +8,9 @@ arg_list = []
 
 file_arg_position = None
 
-count = 0
+arg_count = 0
 for arg in sys.argv:
-    print("arg[{}]: ".format(count),arg)
+    print("arg[{}]: ".format(arg_count),arg)
     
 
     arg_list.append(arg)
@@ -20,9 +20,9 @@ for arg in sys.argv:
 
         #mark position of file arg 
 
-        file_arg_position = count
+        file_arg_position = arg_count
 
-    count = count + 1
+    arg_count = arg_count + 1
 
 
 if file_arg_position:
@@ -36,7 +36,14 @@ if file_arg_position:
 
         if filename.endswith(".html"):
             print("html file found")
+
+            # do process
+
+
         else:
             print("error: file provided is not a \'.html\' file")
+
+
+
 
 
