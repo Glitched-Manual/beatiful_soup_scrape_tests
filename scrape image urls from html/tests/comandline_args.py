@@ -32,4 +32,11 @@ if file_arg_position:
 
     if arg_len > file_arg_position + 1:
         #check if file ends with html
+        filename = sys.argv[file_arg_position + 1]
+
+        if filename.endswith(".html"):
+            print("html file found")
+        else:
+            print("error: file provided is not a \'.html\' file")
+
 
