@@ -13,8 +13,8 @@ import re
 #soup = bs(page.content, 'html.parser')
 #soup = bs(page.content, 'html.parser')
 # find_all_id = soup.find_all(id='test')
-example = open("sample.html")
-example = open("e6_example.html.html")
+#example = open("sample.html")
+example = open("e6_example.html")
 
 soup = bs(example, 'html.parser')
 #print(soup)
