@@ -22,6 +22,10 @@ def jpg_check(passed_link):
 
     return True
 
+def webm_check(passed_link):
+
+    return True
+
 def pull_images_from_file_links(passed_filename):
     # failed
 
