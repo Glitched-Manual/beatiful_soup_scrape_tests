@@ -23,8 +23,20 @@ def jpg_check(passed_link):
     return True
 
 def webm_check(passed_link):
+    x = passed_link.rindex('.')
+    filebase_link = passed_link[:x]
 
-    return True
+    webm_link = filebase_link + ".webm"
+
+    webm_request = requests.get(webm_link)
+
+    if webm_request.status_code == 200:
+
+        os.system("wget --no-check-certificate -nc {}".format(webm_link))
+
+        return True 
+
+    return False
 
 def pull_images_from_file_links(passed_filename):
     # failed
@@ -85,7 +97,8 @@ def pull_images_from_file_links(passed_filename):
 
 
                     else:
-                        print("error pull failed : {} could not be found".format(edited_string_link))
+                        if webm_check(png_link):
+                            print("webm file dowloaded")
 
             # startwith .png new
             elif edited_string_link.endswith(".png"):
@@ -107,7 +120,13 @@ def pull_images_from_file_links(passed_filename):
 
 
                     else:
-                        print("error pull failed : {} could not be found".format(edited_string_link))
+                         #check if webm animation
+                        if webm_check(png_link):
+                            print("webm file dowloaded")
+
+                        else:
+
+                            print("error pull failed : {} could not be found".format(edited_string_link))
 
                         
             else:
