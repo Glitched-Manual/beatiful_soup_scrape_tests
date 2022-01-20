@@ -35,17 +35,11 @@ def pull_images_from_file_links(passed_filename):
 
     soup = bs(example, 'html.parser')
     #print(soup)
-    #for p in example:
-    #    print(p)
-
-
-    #targets = soup.find("tag", {"img"})
-    #targets = soup.img
-
+    
     targets = soup.find_all("img")
 
     #print(targets)
-    current_time = datetime.datetime.now()
+    
     count = 0
 
     for link in targets:
@@ -61,17 +55,12 @@ def pull_images_from_file_links(passed_filename):
             #remove 'preview/'
             edited_string_link = string_link.replace("preview/", "")
 
-            #change jpg to png
-            
-            # check for actual extenstion
-            #image_request = requests.get(edited_string_link)
-
-            #png_link = edited_string_link.replace(".jpg", ".png")
+            #change jpg to png           
+           
             png_link = None
             jpg_link = None
 
-            #jpg_link = edited_string_link.replace(".png", ".jpg")
-
+            
             if edited_string_link.endswith(".jpg"):
                 
                 jpg_link = edited_string_link
