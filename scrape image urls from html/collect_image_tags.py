@@ -9,7 +9,18 @@ import time
 import random
 import sys
 
+def png_check(passed_link):
 
+    
+
+
+    return True
+
+def jpg_check(passed_link):
+
+
+
+    return True
 
 def pull_images_from_file_links(passed_filename):
     # failed
@@ -24,8 +35,8 @@ def pull_images_from_file_links(passed_filename):
 
     soup = bs(example, 'html.parser')
     #print(soup)
-    for p in example:
-        print(p)
+    #for p in example:
+    #    print(p)
 
 
     #targets = soup.find("tag", {"img"})
@@ -53,24 +64,68 @@ def pull_images_from_file_links(passed_filename):
             #change jpg to png
             
             # check for actual extenstion
-            image_request = requests.get(edited_string_link)
+            #image_request = requests.get(edited_string_link)
 
-            jpg_link = edited_string_link.replace(".jpg", ".png")
+            #png_link = edited_string_link.replace(".jpg", ".png")
+            png_link = None
+            jpg_link = None
 
-            if image_request.status_code == 200:
-                os.system("wget --no-check-certificate -nc {}".format(edited_string_link))
-            else:
-                jpg_request = requests.get(jpg_link)
+            #jpg_link = edited_string_link.replace(".png", ".jpg")
+
+            if edited_string_link.endswith(".jpg"):
                 
+                jpg_link = edited_string_link
+                png_link = edited_string_link.replace(".jpg", ".png")
+
+                jpg_request = requests.get(jpg_link)
+
                 if jpg_request.status_code == 200:
                     os.system("wget --no-check-certificate -nc {}".format(jpg_link))
-                
-                else:
-                    print("error pull failed")
 
-            actual_image_string_link = edited_string_link.replace(".jpg", ".png")
+                else:
+                    #check if .png works
+
+                    png_request = requests.get(png_link)
+
+                    if png_request.status_code == 200:
+                        os.system("wget --no-check-certificate -nc {}".format(png_link))
+
+
+                    else:
+                        print("error pull failed : {} could not be found".format(edited_string_link))
+
+            # startwith .png new
+            elif edited_string_link.endswith(".png"):
+                jpg_link = edited_string_link.replace(".png", ".jpg")
+                png_link = edited_string_link
+
+                png_request = requests.get(png_link)
+
+                if png_request.status_code == 200:
+                    os.system("wget --no-check-certificate -nc {}".format(png_link))
+
+                else:
+                    #check if .jpg works
+
+                    jpg_request = requests.get(jpg_link)
+
+                    if jpg_request.status_code == 200:
+                        os.system("wget --no-check-certificate -nc {}".format(jpg_link))
+
+
+                    else:
+                        print("error pull failed : {} could not be found".format(edited_string_link))
+
+                        
+            else:
+                #check for pull failed 
+                
+                print("error pull failed : {} does not match target formats".format(edited_string_link))
+                
+                
             
-            print(actual_image_string_link)
+            
+            
 
         count = count + 1
             #print(link['src'])
