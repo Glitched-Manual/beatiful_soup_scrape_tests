@@ -62,8 +62,8 @@ def pull_images_from_file_links(passed_filename):
             else:
                 jpg_request = requests.get(jpg_link)
                 
-                if image_request.status_code == 200:
-                    os.system("wget --no-check-certificate -nc {}".format(edited_string_link))
+                if jpg_request.status_code == 200:
+                    os.system("wget --no-check-certificate -nc {}".format(jpg_link))
                 
                 else:
                     print("error pull failed")
@@ -126,6 +126,7 @@ if file_arg_position:
                 print(": pull_images_from_file_links() failed - badly")
 
         else:
+            print(sys.exc_info())
             print("error: file provided is not a \'.html\' file")
 
 else:
