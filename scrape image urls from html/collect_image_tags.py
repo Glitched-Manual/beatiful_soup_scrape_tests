@@ -9,62 +9,81 @@ import time
 import random
 import sys
 
+debug_messages = False
+
 class PullOptions:
-    def __init__(self, html_file = None, target_directory = None):
-        self.html_file = html_file        
+    def __init__(self, html_filename = None, target_directory = None):
+        self.html_filename = html_filename        
         self.target_directory = target_directory
-
-    def set_html_file(self, passed_html_file):
-        self.html_file = passed_html_file
-
-    def get_html_file(self):
-        return self.html_file
-
+            
+    def get_html_filename(self):
+        return self.html_filename
+    
     def get_target_directory(self):
         return self.target_directory
 
-    #self.file_ar
 
-def png_check(passed_png_link):
+#declaring options object 
 
+def png_check(passed_png_link, opt_obj = None):
 
-    print("--- start png check ---")
+    if debug_messages:
+        print("--- start png check ---")
 
-    print(passed_png_link)
+        print(passed_png_link)
 
     png_request = requests.get(passed_png_link)
 
-
-    print("--- after request ---")
+    if debug_messages:
+        print("--- after request ---")
 
     if png_request.status_code == 200:
-        print("request passed")
-        os.system("wget --no-check-certificate -nc {}".format(passed_png_link))
+        if opt_obj:
+            if opt_obj.get_target_directory():
+                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_png_link, str(opt_obj.get_target_directory())))
+
+            else:
+                os.system("wget --no-check-certificate -nc {}".format(passed_png_link))
+
+        else:
+            os.system("wget --no-check-certificate -nc {}".format(passed_png_link))
         return True
 
-    print("returned false")
+    #print("returned false")
     return False
 
 def jpg_check(passed_jpg_link, opt_obj = None):
 
-    print("--- start jpg check ---")
+    if debug_messages:
+        print("--- start jpg check ---")
 
-    print(passed_jpg_link)
+        print(passed_jpg_link)
 
     jpg_request = requests.get(passed_jpg_link)
 
-    print("--- after request ---")
+    if debug_messages:
+        print("--- after request ---")
 
     if jpg_request.status_code == 200:
-        os.system("wget --no-check-certificate -nc {}".format(passed_jpg_link))
+        if opt_obj:
+            if opt_obj.get_target_directory():
+                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_jpg_link, str(opt_obj.get_target_directory())))
+
+            else:
+                os.system("wget --no-check-certificate -nc {}".format(passed_jpg_link))
+
+        else:
+            os.system("wget --no-check-certificate -nc {}".format(passed_jpg_link))
         return True
 
-    print("returned false")
+    if debug_messages:
+        print("returned false")
     return False
 
 def webm_check(passed_link, opt_obj = None):
 
-    print("--- start webm check ---")
+    if debug_messages:
+        print("--- start webm check ---")
 
     x = passed_link.rindex('.')
     filebase_link = passed_link[:x]
@@ -75,13 +94,25 @@ def webm_check(passed_link, opt_obj = None):
 
     if webm_request.status_code == 200:
 
-        os.system("wget --no-check-certificate -nc {}".format(webm_link))
+        if opt_obj:
+            if opt_obj.get_target_directory():
+                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(webm_link, str(opt_obj.get_target_directory())))
+
+            else:
+                os.system("wget --no-check-certificate -nc {}".format(webm_link))
+
+        else:
+            os.system("wget --no-check-certificate -nc {}".format(webm_link))
+
+
 
         return True 
 
     return False
 
-def pull_images_from_file_links(passed_filename):
+
+
+def pull_images_from_file_links(passed_filename, opt_obj = None):
     # failed
 
     #page = requests.get("")
@@ -97,7 +128,8 @@ def pull_images_from_file_links(passed_filename):
     
     targets = soup.find_all("img")
 
-    #print(targets)
+    if debug_messages:
+        print(targets)
     
     count = 0
 
@@ -119,7 +151,9 @@ def pull_images_from_file_links(passed_filename):
 
             no_extension_link = edited_string_link[:extension_dot_pos]
 
-            #print(no_extension_link)
+            if debug_messages:
+
+                print(no_extension_link)
 
             #change jpg to png           
            
@@ -127,16 +161,16 @@ def pull_images_from_file_links(passed_filename):
             jpg_link = no_extension_link + ".jpg"
             webm_link = no_extension_link + ".webm"
 
+            if debug_messages:
+                print("------start checks-----")
 
-            print("------start checks-----")
-
-            if jpg_check(jpg_link):
+            if jpg_check(jpg_link, opt_obj):
                 print("jpg file downloaded")
 
-            elif png_check(png_link):
+            elif png_check(png_link, opt_obj):
                 print("png file downloaded")
 
-            elif webm_check(webm_link):
+            elif webm_check(webm_link, opt_obj):
                 print("webm file downloaded")
             
             else:
@@ -148,22 +182,25 @@ def pull_images_from_file_links(passed_filename):
             
             
 
-        count = count + 1
-            #print(link['src'])
-
-        #print(link['src'])
-        # lol ez
+        count = count + 1         
+       
 
     print("*************************")
     print("\tprocess completed")
     print("*************************")
 
+#
+# start of code
+#
+
 arg_len = len(sys.argv)
 
-print("Total args passed: ",arg_len)
+if debug_messages:
 
-arg_list = []
+    print("Total args passed: ",arg_len)
 
+
+#html file options
 file_arg_position = None
 
 # directory options
@@ -174,31 +211,35 @@ directory_for_output = None
 arg_count = 0
 for arg in sys.argv:
     print("arg[{}]: ".format(arg_count),arg)
-    
-
-    arg_list.append(arg)
+  
     # check for html file arg
     if arg == "-f":
-        print("file arg passed")
+        if debug_messages:
+            print("file arg passed")
 
         #mark position of file arg 
 
         file_arg_position = arg_count
 
     if arg == "-d":
-        print("directory arg passed")
+        if debug_messages:
+            print("directory arg passed")
 
         directory_arg_position = arg_count
 
         if arg_len > directory_arg_position + 1:
             directory_for_output = sys.argv[directory_arg_position + 1]
+            
+
+            
 
 
     arg_count = arg_count + 1
 
-
+# if user provided '-f' option
 if file_arg_position:
-    print("file arg found at argv[{}]".format(file_arg_position))
+    if debug_messages:
+        print("file arg found at argv[{}]".format(file_arg_position))
 
     #check if there is an arg after the file arg
 
@@ -206,13 +247,22 @@ if file_arg_position:
         #check if file ends with html
         filename = sys.argv[file_arg_position + 1]
 
+
+        opt_obj = PullOptions(filename, directory_for_output)
+        #print(opt_obj.get_html_filename())
+        #print(opt_obj.get_target_directory())
+
+        if debug_messages:
+                print(opt_obj.get_html_filename())
+
         if filename.endswith(".html"):
-            print("html file found")
+            if debug_messages:
+                print("html file found")
 
             
             # do process
             try:
-                pull_images_from_file_links(filename)
+                pull_images_from_file_links(filename, opt_obj)
             except:
                 print(": pull_images_from_file_links() failed - badly")
                 print(sys.exc_info())
