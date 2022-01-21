@@ -9,20 +9,44 @@ import time
 import random
 import sys
 
-def png_check(passed_link):
+class PullOptions:
+    def __init__(self, html_file = None, target_directory = None):
+        self.html_file = html_file        
+        self.target_directory = target_directory
 
-    
+    def set_html_file(self, passed_html_file):
+        self.html_file = passed_html_file
+
+    def get_html_file(self):
+        return self.html_file
+
+    def get_target_directory(self):
+        return self.target_directory
+
+    #self.file_ar
+
+def png_check(passed_png_link, opt_obj = None):
+    png_request = requests.get(passed_png_link)
+
+    if png_request.status_code == 200:
+        os.system("wget --no-check-certificate -nc {}".format(passed_png_link))
+        return True
 
 
-    return True
+    return False
 
-def jpg_check(passed_link):
+def jpg_check(passed_jpg_link, opt_obj = None):
+
+    jpg_request = requests.get(passed_jpg_link)
+
+    if jpg_request.status_code == 200:
+        os.system("wget --no-check-certificate -nc {}".format(passed_jpg_link))
+        return True
 
 
+    return False
 
-    return True
-
-def webm_check(passed_link):
+def webm_check(passed_link, opt_obj = None):
     x = passed_link.rindex('.')
     filebase_link = passed_link[:x]
 
@@ -71,6 +95,11 @@ def pull_images_from_file_links(passed_filename):
             #remove 'preview/'
             edited_string_link = string_link.replace("preview/", "")
 
+            #remove extension from link
+            extension_dot_pos = edited_string_link.rindex('.')
+
+            no_extension_link = edited_string_link[:extension_dot_pos]
+
             #change jpg to png           
            
             png_link = None
@@ -82,23 +111,23 @@ def pull_images_from_file_links(passed_filename):
                 jpg_link = edited_string_link
                 png_link = edited_string_link.replace(".jpg", ".png")
 
-                jpg_request = requests.get(jpg_link)
+                
 
-                if jpg_request.status_code == 200:
-                    os.system("wget --no-check-certificate -nc {}".format(jpg_link))
+                if jpg_check(jpg_link):
+                    print("jpg link downloaded")
 
                 else:
                     #check if .png works
 
                     png_request = requests.get(png_link)
 
-                    if png_request.status_code == 200:
-                        os.system("wget --no-check-certificate -nc {}".format(png_link))
+                    if png_check(png_link):
+                        print("png link downloaded")
 
 
                     else:
                         if webm_check(png_link):
-                            print("webm file dowloaded")
+                            print("webm file downloaded")
 
             # startwith .png new
             elif edited_string_link.endswith(".png"):
@@ -157,19 +186,33 @@ arg_list = []
 
 file_arg_position = None
 
+# directory options
+directory_arg_position = None
+directory_for_output = None
+
+
 arg_count = 0
 for arg in sys.argv:
     print("arg[{}]: ".format(arg_count),arg)
     
 
     arg_list.append(arg)
-
+    # check for html file arg
     if arg == "-f":
         print("file arg passed")
 
         #mark position of file arg 
 
         file_arg_position = arg_count
+
+    if arg == "-d":
+        print("directory arg passed")
+
+        directory_arg_position = arg_count
+
+        if arg_len > directory_arg_position + 1:
+            directory_for_output = sys.argv[directory_arg_position + 1]
+
 
     arg_count = arg_count + 1
 
@@ -186,6 +229,7 @@ if file_arg_position:
         if filename.endswith(".html"):
             print("html file found")
 
+            
             # do process
             try:
                 pull_images_from_file_links(filename)
