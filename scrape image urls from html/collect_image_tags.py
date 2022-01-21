@@ -25,28 +25,47 @@ class PullOptions:
 
     #self.file_ar
 
-def png_check(passed_png_link, opt_obj = None):
+def png_check(passed_png_link):
+
+
+    print("--- start png check ---")
+
+    print(passed_png_link)
+
     png_request = requests.get(passed_png_link)
 
+
+    print("--- after request ---")
+
     if png_request.status_code == 200:
+        print("request passed")
         os.system("wget --no-check-certificate -nc {}".format(passed_png_link))
         return True
 
-
+    print("returned false")
     return False
 
 def jpg_check(passed_jpg_link, opt_obj = None):
 
+    print("--- start jpg check ---")
+
+    print(passed_jpg_link)
+
     jpg_request = requests.get(passed_jpg_link)
+
+    print("--- after request ---")
 
     if jpg_request.status_code == 200:
         os.system("wget --no-check-certificate -nc {}".format(passed_jpg_link))
         return True
 
-
+    print("returned false")
     return False
 
 def webm_check(passed_link, opt_obj = None):
+
+    print("--- start webm check ---")
+
     x = passed_link.rindex('.')
     filebase_link = passed_link[:x]
 
@@ -100,18 +119,24 @@ def pull_images_from_file_links(passed_filename):
 
             no_extension_link = edited_string_link[:extension_dot_pos]
 
+            #print(no_extension_link)
+
             #change jpg to png           
            
             png_link = no_extension_link + ".png"
             jpg_link = no_extension_link + ".jpg"
+            webm_link = no_extension_link + ".webm"
+
+
+            print("------start checks-----")
 
             if jpg_check(jpg_link):
                 print("jpg file downloaded")
 
-            elif png_link(png_link):
+            elif png_check(png_link):
                 print("png file downloaded")
 
-            elif webm_check(png_link):
+            elif webm_check(webm_link):
                 print("webm file downloaded")
             
             else:
@@ -190,6 +215,7 @@ if file_arg_position:
                 pull_images_from_file_links(filename)
             except:
                 print(": pull_images_from_file_links() failed - badly")
+                print(sys.exc_info())
 
         else:
             print(sys.exc_info())
