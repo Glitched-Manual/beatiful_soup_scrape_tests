@@ -102,66 +102,21 @@ def pull_images_from_file_links(passed_filename):
 
             #change jpg to png           
            
-            png_link = None
-            jpg_link = None
+            png_link = no_extension_link + ".png"
+            jpg_link = no_extension_link + ".jpg"
 
+            if jpg_check(jpg_link):
+                print("jpg file downloaded")
+
+            elif png_link(png_link):
+                print("png file downloaded")
+
+            elif webm_check(png_link):
+                print("webm file downloaded")
             
-            if edited_string_link.endswith(".jpg"):
-                
-                jpg_link = edited_string_link
-                png_link = edited_string_link.replace(".jpg", ".png")
-
-                
-
-                if jpg_check(jpg_link):
-                    print("jpg link downloaded")
-
-                else:
-                    #check if .png works
-
-                    png_request = requests.get(png_link)
-
-                    if png_check(png_link):
-                        print("png link downloaded")
-
-
-                    else:
-                        if webm_check(png_link):
-                            print("webm file downloaded")
-
-            # startwith .png new
-            elif edited_string_link.endswith(".png"):
-                jpg_link = edited_string_link.replace(".png", ".jpg")
-                png_link = edited_string_link
-
-                png_request = requests.get(png_link)
-
-                if png_request.status_code == 200:
-                    os.system("wget --no-check-certificate -nc {}".format(png_link))
-
-                else:
-                    #check if .jpg works
-
-                    jpg_request = requests.get(jpg_link)
-
-                    if jpg_request.status_code == 200:
-                        os.system("wget --no-check-certificate -nc {}".format(jpg_link))
-
-
-                    else:
-                         #check if webm animation
-                        if webm_check(png_link):
-                            print("webm file dowloaded")
-
-                        else:
-
-                            print("error pull failed : {} could not be found".format(edited_string_link))
-
-                        
             else:
-                #check for pull failed 
-                
-                print("error pull failed : {} does not match target formats".format(edited_string_link))
+                print("error could not find a file for {}".format(string_link))         
+            
                 
                 
             
