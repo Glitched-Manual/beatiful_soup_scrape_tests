@@ -41,6 +41,7 @@ def png_check(passed_png_link, opt_obj = None):
         if opt_obj:
             if opt_obj.get_target_directory():
                 os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_png_link, str(opt_obj.get_target_directory())))
+                print(str(os.getcwd()) +"/"+ str(opt_obj.get_target_directory()))
 
             else:
                 os.system("wget --no-check-certificate -nc {}".format(passed_png_link))
@@ -68,6 +69,7 @@ def jpg_check(passed_jpg_link, opt_obj = None):
         if opt_obj:
             if opt_obj.get_target_directory():
                 os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_jpg_link, str(opt_obj.get_target_directory())))
+                #print(str(os.getcwd()) +"/"+ str(opt_obj.get_target_directory()))
 
             else:
                 os.system("wget --no-check-certificate -nc {}".format(passed_jpg_link))
@@ -97,6 +99,7 @@ def webm_check(passed_link, opt_obj = None):
         if opt_obj:
             if opt_obj.get_target_directory():
                 os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(webm_link, str(opt_obj.get_target_directory())))
+                #print(str(os.getcwd()) +"/"+ str(opt_obj.get_target_directory()))
 
             else:
                 os.system("wget --no-check-certificate -nc {}".format(webm_link))
