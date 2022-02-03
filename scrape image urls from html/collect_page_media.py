@@ -2,6 +2,8 @@
 # used to be called e6_image_pull
 # calling er_media_pull
 
+
+# add mp4 later - added
 import requests
 import os
 from tqdm import tqdm
@@ -142,37 +144,56 @@ def gif_check(passed_gif_link, opt_obj = None):
         print("gif check returned false")
     return False
 
-def webm_check(passed_link, opt_obj = None):
+def webm_check(passed_webm_link, opt_obj = None):
 
     if debug_messages:
         print("--- start webm check ---")
 
-    x = passed_link.rindex('.')
-    filebase_link = passed_link[:x]
+    
 
-    webm_link = filebase_link + ".webm"
-
-    webm_request = requests.get(webm_link)
+    webm_request = requests.get(passed_webm_link)
 
     if webm_request.status_code == 200:
 
         if opt_obj:
             if opt_obj.get_target_directory():
-                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(webm_link, str(opt_obj.get_target_directory())))
-                #print(str(os.getcwd()) +"/"+ str(opt_obj.get_target_directory()))
-
+                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_webm_link, str(opt_obj.get_target_directory())))
+                
             else:
-                os.system("wget --no-check-certificate -nc {}".format(webm_link))
+                os.system("wget --no-check-certificate -nc {}".format(passed_webm_link))
 
         else:
-            os.system("wget --no-check-certificate -nc {}".format(webm_link))
-
-
+            os.system("wget --no-check-certificate -nc {}".format(passed_webm_link))
 
         return True 
 
     if debug_messages:
         print("--- start webm check false ---")
+
+    return False
+
+
+def mp4_check(passed_mp4_link, opt_obj = None):
+
+    
+    webm_request = requests.get(passed_mp4_link)
+
+    if webm_request.status_code == 200:
+
+        if opt_obj:
+            if opt_obj.get_target_directory():
+                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_mp4_link, str(opt_obj.get_target_directory())))
+                
+            else:
+                os.system("wget --no-check-certificate -nc {}".format(passed_mp4_link))
+
+        else:
+            os.system("wget --no-check-certificate -nc {}".format(passed_mp4_link))
+
+        return True 
+
+    if debug_messages:
+        print("--- start mp4 check false ---")
 
     return False
 
@@ -186,8 +207,10 @@ def retrieve_media(passed_no_extension_link, passed_unprocessed_link, opt_obj):
     png_link = passed_no_extension_link + ".png"
     jpg_link = passed_no_extension_link + ".jpg"
     jpeg_link = passed_no_extension_link + ".jpeg"
+
     gif_link =  passed_no_extension_link + ".gif"
     webm_link = passed_no_extension_link + ".webm"
+    mp4_link = passed_no_extension_link + ".mp4"
 
     if debug_messages:
         print("------start checks-----")
@@ -201,8 +224,14 @@ def retrieve_media(passed_no_extension_link, passed_unprocessed_link, opt_obj):
     elif png_check(png_link, opt_obj):
         print("png file downloaded")
 
+    elif gif_check(gif_link, opt_obj):
+        print("gif file downloaded")
+
     elif webm_check(webm_link, opt_obj):
         print("webm file downloaded")
+
+    elif mp4_check(gif_link, opt_obj):
+        print("mp4 file downloaded")
     
     else:
         print("error could not find a file for {}".format(passed_unprocessed_link))
