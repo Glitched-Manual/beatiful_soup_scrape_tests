@@ -114,7 +114,33 @@ def jpeg_check(passed_jpeg_link, opt_obj = None):
         print("jpeg check returned false")
     return False
 
+def gif_check(passed_gif_link, opt_obj = None):
 
+    if debug_messages:
+        print("--- start gif check ---")
+
+        print(passed_gif_link)
+
+    jpg_request = requests.get(passed_gif_link)
+
+    if debug_messages:
+        print("--- after request ---")
+
+    if jpg_request.status_code == 200:
+        if opt_obj:
+            if opt_obj.get_target_directory():
+                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_gif_link, str(opt_obj.get_target_directory())))                
+
+            else:
+                os.system("wget --no-check-certificate -nc {}".format(passed_gif_link))
+
+        else:
+            os.system("wget --no-check-certificate -nc {}".format(passed_gif_link))
+        return True
+
+    if debug_messages:
+        print("gif check returned false")
+    return False
 
 def webm_check(passed_link, opt_obj = None):
 
@@ -160,6 +186,7 @@ def retrieve_media(passed_no_extension_link, passed_unprocessed_link, opt_obj):
     png_link = passed_no_extension_link + ".png"
     jpg_link = passed_no_extension_link + ".jpg"
     jpeg_link = passed_no_extension_link + ".jpeg"
+    gif_link =  passed_no_extension_link + ".gif"
     webm_link = passed_no_extension_link + ".webm"
 
     if debug_messages:
