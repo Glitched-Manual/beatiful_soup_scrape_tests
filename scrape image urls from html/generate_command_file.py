@@ -35,8 +35,8 @@ if path_to_folder:
     f = open("./my_command.txt","w")
 
     for target_file in file_list:
-
-        command = "e6_image_pull -f " + str(path_to_folder) + "/html_pages/" + str(target_file) + " -d " + str(path_to_folder)
+        #trying \" to allow for spaces
+        command = "er_media_pull -f \"" + str(path_to_folder) + "\"/html_pages/\"" + str(target_file) + "\" -d " + str(path_to_folder)
         f.write(command + "\n")
         
     f.close()

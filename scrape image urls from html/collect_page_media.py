@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# called e6_image_pull
+# used to be called e6_image_pull
+# calling er_media_pull
+
 import requests
 import os
 from tqdm import tqdm
@@ -9,7 +11,7 @@ import time
 import random
 import sys
 
-debug_messages = True
+debug_messages = False
 
 class PullOptions:
     def __init__(self, html_filename = None, target_directory = None):
@@ -82,6 +84,38 @@ def jpg_check(passed_jpg_link, opt_obj = None):
         print("jpg check returned false")
     return False
 
+
+def jpeg_check(passed_jpeg_link, opt_obj = None):
+
+    if debug_messages:
+        print("--- start jpeg check ---")
+
+        print(passed_jpeg_link)
+
+    jpg_request = requests.get(passed_jpeg_link)
+
+    if debug_messages:
+        print("--- after request ---")
+
+    if jpg_request.status_code == 200:
+        if opt_obj:
+            if opt_obj.get_target_directory():
+                os.system("wget --no-check-certificate -nc {} --directory-prefix=\"{}\"".format(passed_jpeg_link, str(opt_obj.get_target_directory())))
+                #print(str(os.getcwd()) +"/"+ str(opt_obj.get_target_directory()))
+
+            else:
+                os.system("wget --no-check-certificate -nc {}".format(passed_jpeg_link))
+
+        else:
+            os.system("wget --no-check-certificate -nc {}".format(passed_jpeg_link))
+        return True
+
+    if debug_messages:
+        print("jpeg check returned false")
+    return False
+
+
+
 def webm_check(passed_link, opt_obj = None):
 
     if debug_messages:
@@ -125,6 +159,7 @@ def retrieve_media(passed_no_extension_link, passed_unprocessed_link, opt_obj):
            
     png_link = passed_no_extension_link + ".png"
     jpg_link = passed_no_extension_link + ".jpg"
+    jpeg_link = passed_no_extension_link + ".jpeg"
     webm_link = passed_no_extension_link + ".webm"
 
     if debug_messages:
@@ -132,6 +167,9 @@ def retrieve_media(passed_no_extension_link, passed_unprocessed_link, opt_obj):
 
     if jpg_check(jpg_link, opt_obj):
         print("jpg file downloaded")
+
+    elif jpeg_check(jpeg_link, opt_obj):
+        print("jpeg file downloaded")
 
     elif png_check(png_link, opt_obj):
         print("png file downloaded")
