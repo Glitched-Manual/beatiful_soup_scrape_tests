@@ -1,0 +1,16 @@
+rule 34 pull
+
+https://us.rule34.xxx//images/4902/6124bfeb05aeaa75e030e5ddbc1882bb.png
+
+
+https://us.rule34.xxx/thumbnails/4902/thumbnail_6124bfeb05aeaa75e030e5ddbc1882bb.jpg?5581906
+
+------------------------------------
+
+
+
+https://us.rule34.xxx/thumbnails/4902/thumbnail_6124bfeb05aeaa75e030e5ddbc1882bb.jpg?5581906
+
+delete 'thumbnails'
+
+delete '?{and following numbers and such}

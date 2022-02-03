@@ -1,0 +1,17 @@
+named e6_command_gen and e6_image_pull
+
+inside /usr/local/bin
+
+
+e6_command_gen
+---------------------------------------
+a script that automates the process of creating commads to use e6_image_pull
+
+requirements
+
+- a directory must be created that holds a '/html_pages/' subdirectory with the e621 html pages within it
+
+e6_image_pull
+- may call e6_media_pull
+---------------------------------------
+reads a html page from e621.net posts and finds each image and or video (except flash) and downloads them

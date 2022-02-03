@@ -113,32 +113,6 @@ def webm_check(passed_link, opt_obj = None):
 
     return False
 
-def retrieve_media(passed_no_extension_link, passed_unprocessed_link, opt_obj):
-    if debug_messages:
-
-        print(passed_no_extension_link)
-
-    #change jpg to png           
-           
-    png_link = passed_no_extension_link + ".png"
-    jpg_link = passed_no_extension_link + ".jpg"
-    webm_link = passed_no_extension_link + ".webm"
-
-    if debug_messages:
-        print("------start checks-----")
-
-    if jpg_check(jpg_link, opt_obj):
-        print("jpg file downloaded")
-
-    elif png_check(png_link, opt_obj):
-        print("png file downloaded")
-
-    elif webm_check(webm_link, opt_obj):
-        print("webm file downloaded")
-    
-    else:
-        print("error could not find a file for {}".format(passed_unprocessed_link))
-
 
 
 def pull_images_from_file_links(passed_filename, opt_obj = None):
@@ -169,14 +143,18 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
             sleep_time = random.randint(10,26)
             time.sleep(sleep_time)
 
-        if str(link['src']).startswith("https://static1.e621.net"):
+        if str(link['src']).startswith("https://us.rule34.xxx"):
             string_link = str(link['src'])
             
-            #remove 'preview/'
-            edited_string_link = string_link.replace("preview/", "")
+            # rule 34 remove 'thumbnails/'
+            edited_string_link = string_link.replace("thumbnails", "")
 
             #remove extension from link
             extension_dot_pos = edited_string_link.rindex('.')
+
+            # remove trash after
+
+            # below may still work
 
             no_extension_link = edited_string_link[:extension_dot_pos]
 
@@ -203,8 +181,9 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
                 print("webm file downloaded")
             
             else:
-                print("error could not find a file for {}".format(string_link))      
-                           
+                print("error could not find a file for {}".format(string_link))         
+            
+                
                 
             
             
