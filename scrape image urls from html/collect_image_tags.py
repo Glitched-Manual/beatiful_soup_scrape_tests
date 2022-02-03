@@ -9,7 +9,7 @@ import time
 import random
 import sys
 
-debug_messages = False
+debug_messages = True
 
 class PullOptions:
     def __init__(self, html_filename = None, target_directory = None):
@@ -79,7 +79,7 @@ def jpg_check(passed_jpg_link, opt_obj = None):
         return True
 
     if debug_messages:
-        print("returned false")
+        print("jpg check returned false")
     return False
 
 def webm_check(passed_link, opt_obj = None):
@@ -110,6 +110,9 @@ def webm_check(passed_link, opt_obj = None):
 
 
         return True 
+
+    if debug_messages:
+        print("--- start webm check false ---")
 
     return False
 
@@ -143,12 +146,7 @@ def retrieve_media(passed_no_extension_link, passed_unprocessed_link, opt_obj):
 
 def pull_images_from_file_links(passed_filename, opt_obj = None):
     # failed
-
-    #page = requests.get("")
-
-    extensions = [".jpg",".png"]
-
-    #example = open("e6_example.html")
+    
 
     example = open(passed_filename)
 
@@ -180,30 +178,22 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
 
             no_extension_link = edited_string_link[:extension_dot_pos]
 
-            if debug_messages:
+            retrieve_media(no_extension_link,string_link, opt_obj)
 
-                print(no_extension_link)
-
-            #change jpg to png           
-           
-            png_link = no_extension_link + ".png"
-            jpg_link = no_extension_link + ".jpg"
-            webm_link = no_extension_link + ".webm"
-
-            if debug_messages:
-                print("------start checks-----")
-
-            if jpg_check(jpg_link, opt_obj):
-                print("jpg file downloaded")
-
-            elif png_check(png_link, opt_obj):
-                print("png file downloaded")
-
-            elif webm_check(webm_link, opt_obj):
-                print("webm file downloaded")
+        elif str(link['src']).startswith("https://us.rule34.xxx"):
+            string_link = str(link['src'])
             
-            else:
-                print("error could not find a file for {}".format(string_link))      
+            # rule 34 remove 'thumbnails/'
+            edited_string_link = string_link.replace("thumbnails", "/images")
+
+            edited_string_link = edited_string_link.replace("thumbnail_", "")
+
+            #remove extension from link
+            extension_dot_pos = edited_string_link.rindex('.')
+
+            no_extension_link = edited_string_link[:extension_dot_pos]
+
+            retrieve_media(no_extension_link,string_link, opt_obj)
                            
                 
             
@@ -275,11 +265,10 @@ if file_arg_position:
         #check if file ends with html
         filename = sys.argv[file_arg_position + 1]
 
-
+        #object that holds passed parameters
+        
         opt_obj = PullOptions(filename, directory_for_output)
-        #print(opt_obj.get_html_filename())
-        #print(opt_obj.get_target_directory())
-
+        
         if debug_messages:
                 print(opt_obj.get_html_filename())
 

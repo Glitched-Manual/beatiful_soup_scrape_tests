@@ -13,4 +13,8 @@ https://us.rule34.xxx/thumbnails/4902/thumbnail_6124bfeb05aeaa75e030e5ddbc1882bb
 
 delete 'thumbnails'
 
+delete 'thumbnail_'
+
 delete '?{and following numbers and such}
+
+guess check extension
