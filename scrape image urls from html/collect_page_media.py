@@ -183,7 +183,7 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
         elif str(link['src']).startswith("https://us.rule34.xxx"):
             string_link = str(link['src'])
             
-            # rule 34 remove 'thumbnails/'
+            # rule 34 replace 'thumbnails/' with 
             edited_string_link = string_link.replace("thumbnails", "/images")
 
             edited_string_link = edited_string_link.replace("thumbnail_", "")
