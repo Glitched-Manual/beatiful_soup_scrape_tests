@@ -1,0 +1,2 @@
+er_media_pull -f "tests/"/html_pages/"e6_example.html" -d tests/
+er_media_pull -f "tests/"/html_pages/"e6_pull_test.html" -d tests/
