@@ -44,7 +44,7 @@ for arg in sys.argv:
     if arg == "-d":
         directory_arg_position = arg_count
         directory_arg_passed = True
-        print("directory found")
+        #print("directory found")
         if args_length > directory_arg_position + 1:
             directory_path = sys.argv[directory_arg_position + 1]
 
@@ -52,15 +52,12 @@ for arg in sys.argv:
     arg_count = arg_count + 1     
 
 if directory_arg_passed:
-
-    print("yay")
+    
     if directory_path:
 
         write_command_file(directory_path)
 
 else:
-
-
 
     # if proper args not given do below
 

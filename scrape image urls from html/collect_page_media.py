@@ -249,6 +249,8 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
     
     targets = soup.find_all("img")
 
+    #remove existing files from targets
+
     if debug_messages:
         print(targets)
     
