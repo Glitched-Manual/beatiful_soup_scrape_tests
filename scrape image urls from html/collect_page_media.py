@@ -250,7 +250,22 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
     targets = soup.find_all("img")
 
     #remove existing files from targets
+    
+    #no extension file to check
+    
 
+    # directory
+    opt_obj.get_target_directory()
+
+    target_directory = opt_obj.get_target_directory()
+    target_directory_file_list = os.listdir(target_directory)
+    #make a clean list without extensions
+    # it may be fine without removing extensions
+
+
+    if str(sys.argv[0]) in target_directory_file_list:
+        target_directory_file_list.remove(sys.argv[0])
+    
     if debug_messages:
         print(targets)
     
@@ -261,7 +276,6 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
 
         if count > 1:
             sleep_time = random.randint(10,26)
-            time.sleep(sleep_time)
 
         if str(link['src']).startswith("https://static1.e621.net"):
             string_link = str(link['src'])
@@ -273,6 +287,17 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
             extension_dot_pos = edited_string_link.rindex('.')
 
             no_extension_link = edited_string_link[:extension_dot_pos]
+			
+			# compare no extension link to non extension file list
+            #put inside target for loop
+            if no_extension_link in target_directory_file_list:
+                #remove for targets or not if countinue is used.
+                
+                print("file {} found skipping".format(no_extension_link))
+                
+                continue                    
+						
+            time.sleep(sleep_time)
 
             retrieve_media(no_extension_link,string_link, opt_obj)
 
@@ -288,6 +313,15 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
             extension_dot_pos = edited_string_link.rindex('.')
 
             no_extension_link = edited_string_link[:extension_dot_pos]
+            
+            # compare no extension link to non extension file list
+            #put inside target for loop
+            if no_extension_link in target_directory_file_list:
+                #remove for targets or not if countinue is used.
+                print("file {} found skipping".format(no_extension_link))
+                continue
+			
+            time.sleep(sleep_time)
 
             retrieve_media(no_extension_link,string_link, opt_obj)
                            
@@ -296,7 +330,7 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
             
             
 
-        count = count + 1         
+        count = count + 1          
        
 
     print("*************************")
