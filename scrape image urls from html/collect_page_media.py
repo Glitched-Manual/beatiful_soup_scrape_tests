@@ -270,6 +270,7 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
         print(targets)
     
     count = 0
+    sleep_time = 0
 
     for link in targets:
         #get all
@@ -294,12 +295,12 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
                 #remove for targets or not if countinue is used.
                 
                 print("file {} found skipping".format(no_extension_link))
-                
-                continue                    
+                                                   
 						
-            time.sleep(sleep_time)
+            else:
+                time.sleep(sleep_time)
 
-            retrieve_media(no_extension_link,string_link, opt_obj)
+                retrieve_media(no_extension_link,string_link, opt_obj)
 
         elif str(link['src']).startswith("https://us.rule34.xxx"):
             string_link = str(link['src'])
@@ -317,13 +318,13 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
             # compare no extension link to non extension file list
             #put inside target for loop
             if no_extension_link in target_directory_file_list:
-                #remove for targets or not if countinue is used.
-                print("file {} found skipping".format(no_extension_link))
-                continue
-			
-            time.sleep(sleep_time)
+            #remove for targets or not if countinue is used.
+                print("file {} found skipping".format(no_extension_link))              
+                
+            else:
+                time.sleep(sleep_time)
 
-            retrieve_media(no_extension_link,string_link, opt_obj)
+                retrieve_media(no_extension_link,string_link, opt_obj)
                            
                 
             
