@@ -254,9 +254,7 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
     #no extension file to check
     
 
-    # directory
-    opt_obj.get_target_directory()
-
+    # directory    
     target_directory = opt_obj.get_target_directory()
     target_directory_file_list = os.listdir(target_directory)
     #make a clean list without extensions
@@ -324,10 +322,8 @@ def pull_images_from_file_links(passed_filename, opt_obj = None):
             else:
                 time.sleep(sleep_time)
 
-                retrieve_media(no_extension_link,string_link, opt_obj)
-                           
-                
-            
+                retrieve_media(no_extension_link,string_link, opt_obj)                         
+                            
             
             
 
